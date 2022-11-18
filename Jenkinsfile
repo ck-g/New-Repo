@@ -17,8 +17,7 @@ pipeline
 				sh '''
 					rm -fr *
 					git init
-					git clone https://github.com/ck-g/New-Repo.git
-					cd New-Repo
+					git clone https://github.com/ck-g/New-Repo.git .					
 					mvn clean package					
 				'''
 			}
