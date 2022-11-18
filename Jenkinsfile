@@ -3,24 +3,21 @@ pipeline
 	agent any
 	stages
 	{
+		stage('Check-Out')
+		{
+			steps
+			{
+				checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ck-g/New-Repo.git']]])
+			}
+		}
 		stage('Build')
 		{
 			steps
 			{
-				script
+				withMaven(globalMavenSettingsConfig: 'null', jdk: 'JAVA_HOME', maven: 'M2_HOME', mavenOpts: 'clean package', mavenSettingsConfig: 'null') 
 				{
-					sh "mvn clean package"
-				}
-			}
-		}
-		stage('Create Tomcat Container and Deploy War to Tomcat Container')
-		{
-			steps
-			{
-				script
-				{
-					sh "sudo docker image build -t tomcat:1.0 ."
-					sh "sudo docker run -itdp 8081:8080 --name mytomcat tomcat:1.0"	
+    					// some block
+					clean package
 				}
 			}
 		}
