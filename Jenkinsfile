@@ -1,24 +1,27 @@
 pipeline
 {
-	agent any
+	agent
+	{
+		label 
+		{
+			label 'Master'
+			customWorkspace '/opt/Jenkins-Master'
+		}
+	}
 	stages
 	{
-		stage('Check-Out')
+		stage('checkout')
 		{
 			steps
 			{
-				checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ck-g/New-Repo.git']]])
+				sh '''
+					rm -fr *
+					git init
+					git clone https://github.com/ck-g/New-Repo.git
+					cd New-Repo
+					mvn clean package					
+				'''
 			}
-		}
-		stage('Build')
-		{
-			steps
-			{
-				withMaven(globalMavenSettingsConfig: 'null', jdk: 'JAVA_HOME', maven: 'M2_HOME', mavenOpts: 'clean package', mavenSettingsConfig: 'null') 
-				{
-    					
-				}
-			}
-		}
+		}	
 	}
 }
